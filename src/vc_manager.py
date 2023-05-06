@@ -22,7 +22,7 @@ vc_manager：Discord Bot として動作するプログラムです。
 
 __author__ = 'pigeon-sable'
 __version__ = '0.2.0'
-__date__ = '2023/05/02 (Created: 2023/02/22)'
+__date__ = '2023/05/06 (Created: 2023/02/22)'
 
 import os
 import sys
