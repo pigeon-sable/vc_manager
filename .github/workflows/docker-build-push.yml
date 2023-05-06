@@ -1,35 +1,11 @@
-name: CI
+name: docker-build-push
 
 on:
-  push:
-    branches:
-      - "main"
-    paths:
-      - "src/**"
+  release:
+    types: [published]
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4.6.0
-        with:
-          python-version: "3.11"
-          architecture: "x64"
-
-      - name: Get Python version
-        run: python -V
-
-      # - name: Install dependencies
-      #  run: pip install -r requirements.txt
-      # - name: Run Python
-      #  run: python python-sample.py
-
   docker-build-push:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Build the Docker image
@@ -47,10 +23,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4.4.0
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/vc_manager
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v4.0.0
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vc_manager:${{ github.sha }}
+          tags: ${{steps.meta.outputs.tags}}
+          labels: ${{steps.meta.outputs.labels}}
