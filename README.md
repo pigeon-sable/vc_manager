@@ -1,4 +1,4 @@
-# DiscordBOT
+# vc_manager
 
 ## Description
 
@@ -15,13 +15,13 @@ Discord 0.0.273
 ### 1. Clone this repository
 
 ```bash
-git clone git@github.com:Kobayashi123/vc_manager.git
+git clone git@github.com:pigeon-sable/vc_manager.git
 ```
 
 or
 
 ```bash
-git clone https://github.com/Kobayashi123/vc_manager.git
+git clone https://github.com/pigeon-sable/vc_manager.git
 ```
 
 ### 2. Change the working directory
