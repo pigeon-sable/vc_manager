@@ -20,13 +20,13 @@ vc_manager：Discord Bot として動作するプログラムです。
             指定のチャンネルに入室したとき、退出したときに通知を行います。
 """
 
-__author__ = 'pigeon-sable'
-__version__ = '0.2.1'
-__date__ = '2023/05/06 (Created: 2023/02/22)'
+__author__ = "pigeon-sable"
+__version__ = "0.2.1"
+__date__ = "2023/05/06 (Created: 2023/02/22)"
 
+import datetime
 import os
 import sys
-import datetime
 
 import discord
 from dotenv import load_dotenv
@@ -35,9 +35,8 @@ from dotenv import load_dotenv
 def main():
     """
     Discord Botとして動作するメイン（main）プログラムです。
-    常に0を応答します。それが結果（リターンコード：終了ステータス）になることを想定しています。
     """
-    load_dotenv()  # .envファイルから環境変数を読み込む
+    load_dotenv()
 
     client = discord.Client(intents=discord.Intents.default())
 
@@ -46,24 +45,23 @@ def main():
     @client.event
     async def on_ready():
         for channel in client.get_all_channels():
-            if channel.name == 'tech-meetup':
+            if channel.name == "tech-meetup":
                 room_id["VOICE_CHAT_ROOM_ID"] = channel.id
-                print('---------------------------------')
-                print('Channel Name: ' + channel.name)
-                print('Channel ID: ' + str(channel.id))
-                print('---------------------------------')
-            elif channel.name == 'lobby':
+                print("---------------------------------")
+                print("Channel Name: " + channel.name)
+                print("Channel ID: " + str(channel.id))
+                print("---------------------------------")
+            elif channel.name == "lobby":
                 room_id["NOTIFY_ROOM_ID"] = channel.id
-                print('---------------------------------')
-                print('Channel Name: ' + channel.name)
-                print('Channel ID: ' + str(channel.id))
-                print('---------------------------------')
+                print("---------------------------------")
+                print("Channel Name: " + channel.name)
+                print("Channel ID: " + str(channel.id))
+                print("---------------------------------")
 
     member_list = {}
 
     @client.event
     async def on_voice_state_update(member, before, after):
-
         if before.channel != after.channel:
             # 通知メッセージを書き込むテキストチャンネル
             notify_room = client.get_channel(room_id["NOTIFY_ROOM_ID"])
@@ -74,19 +72,23 @@ def main():
             # 入室通知
             if after.channel is not None and after.channel.id == voice_chat_room_id:
                 member_list[member.id] = datetime.datetime.now()
-                await notify_room.send(f'** {after.channel.name} ** に、__{member.name}__ が入室しました！')
-                # print(f'** {after.channel.name} ** に、__{member.name}__ が入室しました！')
+                await notify_room.send(
+                    f"** {after.channel.name} ** に、__{member.name}__ が入室しました！"
+                )
 
             # 退室通知
             if before.channel is not None and before.channel.id == voice_chat_room_id:
-                await notify_room.send(f'** {before.channel.name} ** から、__{member.name}__ が退出しました！')
-                await notify_room.send(f'{(datetime.datetime.now() - member_list[member.id]).seconds // 60} 分間作業をしていました。お疲れ様でした。')
-                # print(f'** {before.channel.name} ** から、__{member.name}__ が退出しました！')
+                await notify_room.send(
+                    f"** {before.channel.name} ** から、__{member.name}__ が退出しました！"
+                )
+                await notify_room.send(
+                    f"{(datetime.datetime.now() - member_list[member.id]).seconds // 60} 分間作業をしていました。お疲れ様でした。"
+                )
 
-    client.run(os.environ['ACCESS_TOKEN'])
+    client.run(os.environ["ACCESS_TOKEN"])
 
     return 0
 
 
-if __name__ == '__main__':  # このスクリプトファイルが直接実行されたときだけ、以下の部分を実行する。
+if __name__ == "__main__":
     sys.exit(main())
