@@ -1,5 +1,11 @@
 # vc_manager
 
+![Python](https://img.shields.io/badge/python-3.11.3-blue.svg)
+![License](https://img.shields.io/badge/license-Apache2.0-blue)
+![Docker Image](https://img.shields.io/docker/v/mozsecurity/vc_manager)
+
+<img src="https://github.com/pigeon-sable/vc_manager/tree/main/images/top_image.png">
+
 ## Description
 
 A Discord Bot program that notifies you when you start a voice chat.
