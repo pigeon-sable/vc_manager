@@ -7,7 +7,6 @@ WORKDIR /app
 COPY ./requirements.txt /app
 COPY ./src /app
 
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip==23.3.1 && pip install --no-cache-dir -r requirements.txt
 
 CMD ["python", "vc_manager.py"]
